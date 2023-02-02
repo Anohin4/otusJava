@@ -1,6 +1,7 @@
 package homework;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,6 +110,7 @@ class CustomerTest {
         //when
         Map.Entry<Customer, String> smallestScore = customerService.getSmallest();
         smallestScore.getKey().setName("Vasyl");
+        assertTrue()
 
         //then
         assertThat(customerService.getSmallest().getKey().getName()).isEqualTo(customer2.getName());
