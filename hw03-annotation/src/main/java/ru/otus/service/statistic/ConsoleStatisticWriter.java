@@ -20,7 +20,8 @@ public class ConsoleStatisticWriter implements StatisticWriter {
 
     @Override
     public void writeStatistic() {
-        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.println(
+                "------------------------------------------------------------------------------------------");
         System.out.println("Статистика");
 
         Set<Entry<TestResultEnum, List<StatisticCase>>> entrySet = resultMap.getEntrySet();

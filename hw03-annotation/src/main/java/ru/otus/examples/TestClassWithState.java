@@ -7,6 +7,7 @@ import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
 
 public class TestClassWithState {
+
     private String testString;
 
     public TestClassWithState() {

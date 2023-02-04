@@ -29,7 +29,7 @@ public class TestExecutorImpl implements TestExecutor {
         this.repoMap = new Multimap<>();
         this.statisticService = statisticService;
         this.validator = new TestClassValidatorImpl(repoMap);
-        this.queueWriter  = new TestQueueWriterImpl(repoMap);
+        this.queueWriter = new TestQueueWriterImpl(repoMap);
     }
 
     public void runTestsForClass(Class testClazz)
