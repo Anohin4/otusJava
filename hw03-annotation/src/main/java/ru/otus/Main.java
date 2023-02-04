@@ -6,14 +6,14 @@ import ru.otus.examples.TestClassWithExceptionInBefore;
 import ru.otus.examples.TestClassWithExceptionInTest;
 import ru.otus.examples.TestClassWithFailedAssertion;
 import ru.otus.examples.TestClassWithState;
-import ru.otus.service.TestExecutor;
+import ru.otus.service.TestExecutorImpl;
 import ru.otus.service.statistic.StatisticServiceImpl;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        TestExecutor testExecutor = new TestExecutor(new StatisticServiceImpl());
+        TestExecutorImpl testExecutor = new TestExecutorImpl(new StatisticServiceImpl());
         testExecutor.runTestsForClass(SimpleTestClass.class);
         testExecutor.runTestsForClass(TestClassWithState.class);
         testExecutor.runTestsForClass(TestClassWithState.class);
