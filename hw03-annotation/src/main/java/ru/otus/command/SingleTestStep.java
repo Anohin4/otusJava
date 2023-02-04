@@ -1,5 +1,6 @@
 package ru.otus.command;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class SingleTestStep implements TestStep {
@@ -13,7 +14,11 @@ public class SingleTestStep implements TestStep {
     }
 
     @Override
-    public void execute() throws Exception {
-        method.invoke(objectToTest);
+    public void execute() throws Throwable {
+        try {
+            method.invoke(objectToTest);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
+        }
     }
 }

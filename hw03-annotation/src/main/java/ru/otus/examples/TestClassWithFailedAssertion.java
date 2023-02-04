@@ -25,7 +25,20 @@ public class TestClassWithFailedAssertion {
     }
 
     @Test
-    public void secondTest() {
+    public void testTwo() {
+        assertEquals("incorrectResult", testString);
+    }
+    @Test
+    public void testThree() {
+        assertEquals("incorrectResult", testString);
+    }
+    @Test
+    public void testFour() {
+        assertEquals("incorrectResult", testString);
+    }
+
+    @Test
+    public void goodTest() {
         assertEquals("beforeState", testString);
     }
 

@@ -35,8 +35,10 @@ public class StatisticServiceImpl implements StatisticService {
 
     @Override
     public void endStatisticCase() {
-        this.statisticCase.setActive(false);
-        resultMap.put(OK, statisticCase);
+        if(statisticCase.isActive()) {
+            this.statisticCase.setActive(false);
+            resultMap.put(OK, statisticCase);
+        }
     }
 
     @Override

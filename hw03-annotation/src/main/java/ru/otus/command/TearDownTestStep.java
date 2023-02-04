@@ -21,7 +21,7 @@ public class TearDownTestStep implements TestStep {
                 testStep.invoke(testObject);
             }
         } catch (Exception e) {
-            throw new TearDownException(e.getMessage());
+            throw new TearDownException(e.getCause().getMessage());
         }
     }
 }

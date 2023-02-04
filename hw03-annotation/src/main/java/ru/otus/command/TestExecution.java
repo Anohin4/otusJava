@@ -2,7 +2,9 @@ package ru.otus.command;
 
 import static java.util.Objects.nonNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Deque;
+import lombok.SneakyThrows;
 import ru.otus.exceptions.handling.ExceptionHandlingService;
 import ru.otus.service.statistic.StatisticService;
 
@@ -22,7 +24,8 @@ public class TestExecution implements TestStep {
 
 
     @Override
-    public void execute() throws Exception {
+    @SneakyThrows
+    public void execute() {
         var testStep = testSteps.poll();
         while (nonNull(testStep)) {
             try {

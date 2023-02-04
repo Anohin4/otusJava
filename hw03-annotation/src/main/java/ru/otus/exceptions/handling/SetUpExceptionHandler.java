@@ -1,6 +1,7 @@
 package ru.otus.exceptions.handling;
 
 import java.util.Deque;
+import lombok.SneakyThrows;
 import ru.otus.command.TestStep;
 
 public class SetUpExceptionHandler implements ExceptionHandler {
@@ -12,7 +13,8 @@ public class SetUpExceptionHandler implements ExceptionHandler {
     }
 
     @Override
-    public void handleException(Exception exception) throws Exception {
+    @SneakyThrows
+    public void handleException(Exception exception) {
         System.out.println(exception.getMessage());
         System.out.println("Выполняем действия after и прекращаем выполнение тестов");
 

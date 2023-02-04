@@ -24,7 +24,7 @@ public class SetUpStep implements TestStep {
             }
         } catch (Exception e) {
             throw new SetUpException(
-                    "Ошибка во время шага \"Before\". Изначальная ошибка: " + e.getMessage());
+                    "Ошибка во время шага \"Before\". Изначальная ошибка: " + e.getCause().getMessage());
         }
     }
 }

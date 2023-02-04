@@ -1,9 +1,11 @@
 package ru.otus.exceptions.handling;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import ru.otus.command.TestStep;
+import ru.otus.exceptions.AssertException;
 import ru.otus.exceptions.SetUpException;
 import ru.otus.exceptions.TearDownException;
 
@@ -17,6 +19,7 @@ public class ExceptionHandlingServiceImpl implements ExceptionHandlingService {
         this.handlerRepo = new HashMap<>();
         handlerRepo.put(SetUpException.class, new SetUpExceptionHandler(testStepQueue));
         handlerRepo.put(TearDownException.class, new TearDownExceptionHandler());
+        handlerRepo.put(AssertException.class, new AssertionExceptionHandler());
     }
 
     @Override

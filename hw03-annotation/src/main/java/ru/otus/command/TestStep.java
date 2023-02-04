@@ -2,6 +2,6 @@ package ru.otus.command;
 
 public interface TestStep {
 
-    void execute() throws Exception;
+    void execute() throws Throwable;
 
 }
