@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        TestExecutorImpl testExecutor = new TestExecutorImpl(new StatisticServiceImpl());
+        var testExecutor = new TestExecutorImpl(new StatisticServiceImpl());
         testExecutor.runTestsForClass(SimpleTestClass.class);
         testExecutor.runTestsForClass(TestClassWithState.class);
         testExecutor.runTestsForClass(TestClassWithFailedAssertion.class);
