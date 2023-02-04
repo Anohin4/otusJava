@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import ru.otus.command.TestStep;
 import ru.otus.exceptions.SetUpException;
+import ru.otus.exceptions.TearDownException;
 
 public class ExceptionHandlingServiceImpl implements ExceptionHandlingService {
 
@@ -15,6 +16,7 @@ public class ExceptionHandlingServiceImpl implements ExceptionHandlingService {
         this.testStepQueue = testStepQueue;
         this.handlerRepo = new HashMap<>();
         handlerRepo.put(SetUpException.class, new SetUpExceptionHandler(testStepQueue));
+        handlerRepo.put(TearDownException.class, new TearDownExceptionHandler());
     }
 
     @Override

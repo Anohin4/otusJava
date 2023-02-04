@@ -1,14 +1,26 @@
 package ru.otus;
 
+import ru.otus.examples.SimpleTestClass;
+import ru.otus.examples.TestClassWithExceptionInAfter;
+import ru.otus.examples.TestClassWithExceptionInBefore;
+import ru.otus.examples.TestClassWithExceptionInTest;
+import ru.otus.examples.TestClassWithFailedAssertion;
+import ru.otus.examples.TestClassWithState;
 import ru.otus.service.TestExecutor;
 import ru.otus.service.statistic.StatisticServiceImpl;
-import ru.otus.service.validation.TestClassValidatorImpl;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello world!");
+
         TestExecutor testExecutor = new TestExecutor(new StatisticServiceImpl());
-        testExecutor.runTestsForClass(TestClass.class);
+        testExecutor.runTestsForClass(SimpleTestClass.class);
+        testExecutor.runTestsForClass(TestClassWithState.class);
+        testExecutor.runTestsForClass(TestClassWithState.class);
+        testExecutor.runTestsForClass(TestClassWithFailedAssertion.class);
+        testExecutor.runTestsForClass(TestClassWithExceptionInBefore.class);
+        testExecutor.runTestsForClass(TestClassWithExceptionInTest.class);
+        testExecutor.runTestsForClass(TestClassWithExceptionInAfter.class);
+
     }
 }

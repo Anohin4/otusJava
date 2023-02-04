@@ -1,20 +1,20 @@
 package ru.otus.service.statistic;
 
 import static java.util.Objects.nonNull;
-import static ru.otus.model.TestCaseResultEnum.OK;
-import static ru.otus.model.TestCaseResultEnum.UNKNOWN;
+import static ru.otus.model.TestResultEnum.OK;
+import static ru.otus.model.TestResultEnum.UNKNOWN;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import ru.otus.model.StatisticCase;
-import ru.otus.model.TestCaseResultEnum;
+import ru.otus.model.TestResultEnum;
 import ru.otus.utils.Multimap;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StatisticServiceImpl implements StatisticService {
 
     StatisticCase statisticCase;
-    Multimap<TestCaseResultEnum, StatisticCase> resultMap;
+    Multimap<TestResultEnum, StatisticCase> resultMap;
     final StatisticWriter writer;
 
     public StatisticServiceImpl() {
@@ -42,12 +42,13 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public void endStatisticCase(Exception e) {
         this.statisticCase.setActive(false);
-        resultMap.put(TestCaseResultEnum.getByException(e), statisticCase);
+        resultMap.put(TestResultEnum.getByException(e), statisticCase);
 
     }
 
     @Override
-    public void printStatistic() {
+    public void printStatisticAndCLear() {
         writer.writeStatistic();
+        resultMap.clear();
     }
 }

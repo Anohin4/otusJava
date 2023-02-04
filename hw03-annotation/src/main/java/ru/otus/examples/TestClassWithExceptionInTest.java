@@ -1,14 +1,15 @@
-package ru.otus;
+package ru.otus.examples;
 
 import ru.otus.annotations.After;
 import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
 
-public class TestClass {
+public class TestClassWithExceptionInTest {
 
     @Before
     public void before() {
         System.out.println("this is before");
+        throw new RuntimeException("this is exception");
     }
 
     @Test

@@ -4,7 +4,7 @@ import ru.otus.exceptions.AssertException;
 import ru.otus.exceptions.SetUpException;
 import ru.otus.exceptions.TearDownException;
 
-public enum TestCaseResultEnum {
+public enum TestResultEnum {
     OK(OkException.class, "Успешно пройденные тесты"),
     TEST_FAILED(AssertException.class, "Проваленные тесты "),
     TEST_FAILED_WITH_EXCEPTION(Exception.class, "Тесты завершившиеся ошибкой"),
@@ -15,13 +15,13 @@ public enum TestCaseResultEnum {
     private Class<? extends Exception> correspondingException;
     public String description;
 
-    TestCaseResultEnum(Class<? extends Exception> okExceptionClass, String description) {
+    TestResultEnum(Class<? extends Exception> okExceptionClass, String description) {
         this.correspondingException = okExceptionClass;
         this.description = description;
     }
 
-    public static TestCaseResultEnum getByException(Exception e) {
-        for (TestCaseResultEnum enumValue : TestCaseResultEnum.values()) {
+    public static TestResultEnum getByException(Exception e) {
+        for (TestResultEnum enumValue : TestResultEnum.values()) {
             if (e.getClass().equals(enumValue.correspondingException)) {
                 return enumValue;
             }

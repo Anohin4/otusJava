@@ -8,5 +8,5 @@ public interface StatisticService {
 
     void endStatisticCase(Exception e);
 
-    void printStatistic();
+    void printStatisticAndCLear();
 }

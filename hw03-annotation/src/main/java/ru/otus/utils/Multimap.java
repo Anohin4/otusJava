@@ -41,6 +41,9 @@ public class Multimap<K, V> {
     public Set<Entry<K, List<V>>> getEntrySet() {
         return repoMap.entrySet();
     }
+    public void clear() {
+        repoMap.clear();
+    }
 
 
 }
