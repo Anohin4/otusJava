@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class Multimap<K, V> {
 
@@ -36,10 +34,6 @@ public class Multimap<K, V> {
             return List.copyOf(repoMap.get(key));
         }
         return Collections.emptyList();
-    }
-
-    public Set<Entry<K, List<V>>> getEntrySet() {
-        return repoMap.entrySet();
     }
 
     public void clear() {

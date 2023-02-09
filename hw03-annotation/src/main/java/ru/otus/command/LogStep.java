@@ -9,7 +9,7 @@ public class LogStep implements TestStep {
     }
 
     @Override
-    public void execute() throws Exception {
+    public void execute() {
         System.out.println(
                 "------------------------------------------------------------------------------------------");
         System.out.println("Начинаем выполнение теста " + methodName);

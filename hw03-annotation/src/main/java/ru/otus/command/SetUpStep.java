@@ -2,6 +2,7 @@ package ru.otus.command;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import lombok.SneakyThrows;
 import ru.otus.exceptions.SetUpException;
 
 public class SetUpStep implements TestStep {
@@ -17,7 +18,8 @@ public class SetUpStep implements TestStep {
 
 
     @Override
-    public void execute() throws Exception {
+    @SneakyThrows
+    public void execute()  {
         try {
             for (var testStep : steps) {
                 testStep.invoke(testObject);

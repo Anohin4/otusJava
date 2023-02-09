@@ -2,6 +2,7 @@ package ru.otus.command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import lombok.SneakyThrows;
 
 public class SingleTestStep implements TestStep {
 
@@ -14,7 +15,8 @@ public class SingleTestStep implements TestStep {
     }
 
     @Override
-    public void execute() throws Throwable {
+    @SneakyThrows
+    public void execute() {
         try {
             method.invoke(objectToTest);
         } catch (InvocationTargetException e) {

@@ -2,11 +2,8 @@ package ru.otus.service.statistic;
 
 public interface StatisticService {
 
-    void startStatisticCase(String testName);
+    void addSuccessCase();
+    void addFailTest();
 
-    void endStatisticCase();
-
-    void endStatisticCase(Exception e);
-
-    void printStatisticAndCLear();
+    void printStatistic();
 }

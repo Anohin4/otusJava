@@ -9,62 +9,52 @@ import java.util.List;
 import ru.otus.annotations.After;
 import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
-import ru.otus.command.TestExecution;
+import ru.otus.command.LogStep;
+import ru.otus.command.SetUpStep;
+import ru.otus.command.SingleTestStep;
+import ru.otus.command.TearDownTestStep;
 import ru.otus.command.TestStep;
-import ru.otus.exceptions.handling.ExceptionHandlingServiceImpl;
 import ru.otus.service.statistic.StatisticService;
-import ru.otus.service.validation.TestClassValidator;
-import ru.otus.service.validation.TestClassValidatorImpl;
+import ru.otus.service.statistic.StatisticServiceImpl;
 import ru.otus.utils.Multimap;
 
 public class TestExecutorImpl implements TestExecutor {
 
     private final List<Class<? extends Annotation>> annotationList = List.of(Test.class, Before.class, After.class);
     private final Multimap<Class<? extends Annotation>, Method> repoMap;
-    private final TestClassValidator validator;
-    private final StatisticService statisticService;
-    private final TestQueueWriterImpl queueWriter;
+    private StatisticService statisticService;
 
-    public TestExecutorImpl(StatisticService statisticService) {
+    public TestExecutorImpl() {
         this.repoMap = new Multimap<>();
-        this.statisticService = statisticService;
-        this.validator = new TestClassValidatorImpl(repoMap);
-        this.queueWriter = new TestQueueWriterImpl(repoMap);
     }
 
-    public void runTestsForClass(Class testClazz)
+    public void runTestsForClass(Class<?> testClazz)
             throws Exception {
+        statisticService = new StatisticServiceImpl();
         //создаем очередь, в которые пишем порядок выполнения тестов
         Deque<TestStep> testStepQueue = new LinkedList<>();
 
-        var exceptionHandler = new ExceptionHandlingServiceImpl(testStepQueue);
-
         prepareRepoMap(testClazz);
-        validator.validate();
 
         List<Method> testList = repoMap.getOrEmptyList(Test.class);
         for (Method testMethod : testList) {
-            statisticService.startStatisticCase(testMethod.getName());
-            queueWriter.fillTestQueue(testClazz, testStepQueue, testMethod);
+            var testObject = testClazz.getConstructor().newInstance();
+            fillTestQueue(testStepQueue, testMethod, testObject);
 
-            var testExecution = new TestExecution(testStepQueue,
-                    exceptionHandler, statisticService);
-            try {
-                testExecution.execute();
-            } catch (Exception e) {
-                System.out.println("Ошибка во время выполнения теста");
-                System.out.println(e.getMessage());
-                break;
+            boolean withoutExceptions = executeTest(testStepQueue, testMethod, testObject);
+            if(withoutExceptions) {
+                statisticService.addSuccessCase();
             }
         }
-        statisticService.printStatisticAndCLear();
+        statisticService.printStatistic();
         repoMap.clear();
     }
+
 
     /**
      * Метод подготавливает мапу , сортируя методы по аннотациям
      */
-    private void prepareRepoMap(Class testClazz) {
+    private void prepareRepoMap(Class<?> testClazz) {
         List<Method> methods = Arrays.asList(testClazz.getMethods());
         methods.stream()
                 .forEach(elem -> {
@@ -74,6 +64,35 @@ public class TestExecutorImpl implements TestExecutor {
                         }
                     }
                 });
+    }
+
+    /**
+     * Заполняем очередь комманд самим тестом
+     */
+    private void fillTestQueue(Deque<TestStep> testStepQueue, Method testMethod, Object testObject) {
+        testStepQueue.add(new LogStep(testMethod.getName()));
+        testStepQueue.add(new SetUpStep(repoMap.getOrEmptyList(Before.class), testObject));
+        testStepQueue.add(new SingleTestStep(testMethod, testObject));
+    }
+
+    /**
+     * Выполняем тест и обрабатываем возникающие ошибки Если тест прошел успешно - возвращается true
+     */
+    private boolean executeTest(Deque<TestStep> testStepQueue, Method testMethod, Object testObject) {
+        boolean withoutExceptions = true;
+        try {
+            testStepQueue.forEach(TestStep::execute);
+        } catch (Exception e) {
+            statisticService.addFailTest();
+            withoutExceptions = false;
+            System.out.println("Ошибка во время выполнения теста " + testMethod.getName());
+            System.out.println(e.getMessage());
+            testStepQueue.clear();
+        } finally {
+            new TearDownTestStep(repoMap.getOrEmptyList(After.class),
+                    testObject, statisticService).execute();
+        }
+        return withoutExceptions;
     }
 
 }
