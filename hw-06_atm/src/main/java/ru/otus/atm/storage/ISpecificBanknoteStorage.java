@@ -1,7 +1,7 @@
-package ru.otus.storage;
+package ru.otus.atm.storage;
 
 import java.util.List;
-import ru.otus.banknotes.Banknote;
+import ru.otus.atm.banknotes.Banknote;
 
 public interface ISpecificBanknoteStorage {
 

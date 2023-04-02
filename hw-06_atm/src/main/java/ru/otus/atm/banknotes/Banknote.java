@@ -1,6 +1,4 @@
-package ru.otus.banknotes;
-
-import java.util.UUID;
+package ru.otus.atm.banknotes;
 
 public interface Banknote {
 

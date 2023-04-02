@@ -1,11 +1,11 @@
-package ru.otus.storage;
+package ru.otus.atm.storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ru.otus.banknotes.Banknote;
+import ru.otus.atm.banknotes.Banknote;
 
 public class MoneyStorageImpl implements MoneyStorage {
 
@@ -39,12 +39,12 @@ public class MoneyStorageImpl implements MoneyStorage {
     @Override
     public List<Integer> getSortedListOfAvailableDenominationsDesc() {
         List<Integer> result = new ArrayList<>(storageMap.keySet());
-        Collections.sort(result);
+        Collections.reverse(result);
         return result;
     }
 
     @Override
-    public boolean hasThatAmountOfMoney(int summ) {
-        return currentAvailableMoney >= summ;
+    public int getCurrentAmountOfMoney() {
+        return currentAvailableMoney;
     }
 }

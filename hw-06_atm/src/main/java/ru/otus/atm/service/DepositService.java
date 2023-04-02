@@ -1,7 +1,7 @@
-package ru.otus.service;
+package ru.otus.atm.service;
 
 import java.util.List;
-import ru.otus.banknotes.Banknote;
+import ru.otus.atm.banknotes.Banknote;
 
 public interface DepositService {
 

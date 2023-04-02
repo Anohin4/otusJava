@@ -1,10 +1,10 @@
-package ru.otus.service;
+package ru.otus.atm.service;
 
 import java.util.List;
 import java.util.Map.Entry;
-import ru.otus.banknotes.Banknote;
-import ru.otus.storage.MoneyStorage;
-import ru.otus.utils.Multimap;
+import ru.otus.atm.banknotes.Banknote;
+import ru.otus.atm.storage.MoneyStorage;
+import ru.otus.atm.utils.Multimap;
 
 public class DepositServiceImpl implements DepositService {
 
