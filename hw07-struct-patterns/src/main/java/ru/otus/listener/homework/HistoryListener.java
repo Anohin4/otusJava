@@ -19,13 +19,8 @@ public class HistoryListener implements Listener, HistoryReader {
 
     @Override
     public void onUpdated(Message msg) {
-        Builder builder = msg.toBuilder();
-        List<String> deepCopy = new ArrayList<>(msg.getField13().getData());
-        ObjectForMessage objectForMessage = new ObjectForMessage();
-        objectForMessage.setData(deepCopy);
-        builder.field13(objectForMessage);
 
-        storageMap.put(msg.getId(), builder.build());
+        storageMap.put(msg.getId(), msg.copy());
     }
 
     @Override

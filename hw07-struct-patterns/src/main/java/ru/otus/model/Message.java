@@ -1,5 +1,10 @@
 package ru.otus.model;
 
+import static java.util.Objects.nonNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Message {
 
     private final long id;
@@ -116,6 +121,17 @@ public class Message {
 
     public Builder toBuilder() {
         return new Builder(id, field1, field2, field3, field4, field5, field6, field7, field8, field9, field10, field11, field12, field13);
+    }
+
+    public Message copy() {
+        Builder builder = this.toBuilder();
+        if(nonNull(field13)) {
+            List<String> deepCopy = new ArrayList<>(field13.getData());
+            ObjectForMessage objectForMessage = new ObjectForMessage();
+            objectForMessage.setData(deepCopy);
+            builder.field13(objectForMessage);
+        }
+        return builder.build();
     }
 
     @Override
