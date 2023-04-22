@@ -54,7 +54,7 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData<T> {
     }
 
     private String initInsertSql() {
-        List<String> fieldNames = metaData.getAllFields()
+        List<String> fieldNames = metaData.getFieldsWithoutId()
                 .stream()
                 .map(Field::getName)
                 .toList();

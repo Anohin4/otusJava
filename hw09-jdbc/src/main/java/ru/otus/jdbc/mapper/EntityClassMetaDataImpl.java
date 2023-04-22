@@ -19,11 +19,13 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     private String name;
     private Field idField;
     private final List<Field> notIdFields;
+    private final List<Field> allFields;
     private Constructor<T> tConstructor;
 
     public EntityClassMetaDataImpl(Class<T> persistentClass) {
         this.persistentClass = persistentClass;
-        notIdFields = new ArrayList<>();
+        this.notIdFields = new ArrayList<>();
+        this.allFields = new ArrayList<>();
         initMetaData();
     }
 
@@ -44,9 +46,7 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
     @Override
     public List<Field> getAllFields() {
-        List<Field> fields = new ArrayList<>(notIdFields);
-        fields.add(idField);
-        return fields;
+        return new ArrayList<>(allFields);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
             } else {
                 notIdFields.add(field);
             }
+            allFields.add(field);
         }
         if (isNull(idField)) {
             throw new NoIdFieldException("Can't find Id in class");

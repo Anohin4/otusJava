@@ -23,7 +23,7 @@ public class EntitySQLParamMetaDataImpl<T> implements EntitySQLParamsMetaData<T>
     @SneakyThrows
     public List<Object> getInsertParams(T object) {
         List<Object> result = new ArrayList<>();
-        for (Field f : metaData.getAllFields()) {
+        for (Field f : metaData.getFieldsWithoutId()) {
             f.setAccessible(true);
             result.add(f.get(object));
         }
