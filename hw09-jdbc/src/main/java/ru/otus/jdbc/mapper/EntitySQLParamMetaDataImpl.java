@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.SneakyThrows;
 
 public class EntitySQLParamMetaDataImpl<T> implements EntitySQLParamsMetaData<T> {
-    private EntityClassMetaData<T> metaData;
+    private final EntityClassMetaData<T> metaData;
 
     public EntitySQLParamMetaDataImpl(EntityClassMetaData<T> metaData) {
         this.metaData = metaData;

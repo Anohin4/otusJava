@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import ru.otus.EntityResultSetFunctions;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.repository.executor.DbExecutor;
 
@@ -14,13 +13,13 @@ import ru.otus.core.repository.executor.DbExecutor;
 public class DataTemplateJdbc<T> implements DataTemplate<T> {
 
     private final DbExecutor dbExecutor;
-    protected final EntitySQLMetaData<T> entitySQLMetaData;
+    protected final EntitySQLMetaData entitySQLMetaData;
     protected final EntityResultSetFunctions<T> functions;
     protected final EntitySQLParamsMetaData<T> sqlParams;
 
     public DataTemplateJdbc(DbExecutor dbExecutor, EntityClassMetaData<T> entitySQLMetaData) {
         this.dbExecutor = dbExecutor;
-        this.entitySQLMetaData = new EntitySQLMetaDataImpl<>(entitySQLMetaData);
+        this.entitySQLMetaData = new EntitySQLMetaDataImpl(entitySQLMetaData);
         this.functions = new EntityResultSetFunctions<>(entitySQLMetaData);
         this.sqlParams = new EntitySQLParamMetaDataImpl<>(entitySQLMetaData);
     }

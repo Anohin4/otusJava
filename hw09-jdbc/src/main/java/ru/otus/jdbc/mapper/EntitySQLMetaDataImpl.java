@@ -4,53 +4,54 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData<T> {
+public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
 
-    EntityClassMetaData<T> metaData;
-    private String SELECT_ALL_SQL;
-    private String SELECT_BY_ID_SQL;
-    private String INSERT_SQL;
-    private String UPDATE_SQL;
+    private final EntityClassMetaData<?> metaData;
+    private final String selectAllSql;
+    private final String selectByIdSql;
+    private final String insertSql;
+    private final String updateSql;
 
 
-    public EntitySQLMetaDataImpl(EntityClassMetaData<T> metaData) {
+    public EntitySQLMetaDataImpl(EntityClassMetaData<?> metaData) {
         this.metaData = metaData;
-        this.SELECT_ALL_SQL = initSelectAllSql();
-        this.SELECT_BY_ID_SQL = initSelectById();
-        this.INSERT_SQL = initInsertSql();
-        this.UPDATE_SQL = initUpdateSql();
+        this.selectAllSql = initSelectAllSql();
+        this.selectByIdSql = initSelectById();
+        this.insertSql = initInsertSql();
+        this.updateSql = initUpdateSql();
     }
 
     @Override
     public String getSelectAllSql() {
-
-        return SELECT_ALL_SQL;
+        return selectAllSql;
     }
 
     @Override
     public String getSelectByIdSql() {
-        return SELECT_BY_ID_SQL;
+        return selectByIdSql;
     }
 
     @Override
     public String getInsertSql() {
-        return INSERT_SQL;
+        return insertSql;
     }
 
     @Override
     public String getUpdateSql() {
-        return UPDATE_SQL;
+        return updateSql;
     }
 
     private String initSelectAllSql() {
         String name = metaData.getName();
-        return "SELECT * FROM " + name;
+        String fieldNames = getFiledNames();
+        return "SELECT "+ fieldNames +" FROM " + name;
     }
 
     private String initSelectById() {
         String name = metaData.getName();
         String idField = metaData.getIdField().getName();
-        return "SELECT * FROM " + name + " WHERE " + idField + "=?";
+        String fieldNames = getFiledNames();
+        return "SELECT "+ fieldNames +" FROM " + name + " WHERE " + idField + "=?";
     }
 
     private String initInsertSql() {
@@ -77,6 +78,13 @@ public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData<T> {
                 .collect(Collectors.joining());
         setString = setString.substring(0, setString.lastIndexOf(","));
         return "UPDATE " + tableName + " SET " + setString + " where " + idFieldName + "=?";
+    }
 
+    private String getFiledNames() {
+        List<String> fieldNames = metaData.getAllFields()
+                .stream()
+                .map(Field::getName)
+                .toList();
+        return String.join(", ", fieldNames);
     }
 }
