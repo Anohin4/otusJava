@@ -85,11 +85,11 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     private Constructor<T> initConstructor() {
         for (Constructor<?> constructor : persistentClass.getConstructors()) {
             //полный конструктор это количество не ид полей + ид поле
-            if (constructor.getParameterCount() == notIdFields.size() + 1) {
+            if (constructor.getParameterCount() == 0) {
                 return (Constructor<T>) constructor;
             }
         }
-        throw new NoAllArgumentsConstructorException("Can't find constructor for all arguments");
+        throw new NoAllArgumentsConstructorException("Can't find default constructor for class " + persistentClass);
     }
 
 }
