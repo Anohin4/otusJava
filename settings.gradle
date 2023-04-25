@@ -4,5 +4,6 @@ include 'hw02-generics'
 include 'hw05-proxy'
 include 'hw04-gc'
 include 'hw03-annotation'
+include 'hw07-struct-patterns'
 include 'hw-06_atm'
 
