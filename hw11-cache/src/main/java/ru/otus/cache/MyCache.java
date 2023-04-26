@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyCache<K, V> implements HwCache<K, V> {
+    private static final Logger logger = LoggerFactory.getLogger(MyCache.class);
 
     private final List<HwListener<K, V>> listeners;
     private final Map<K, V> cacheStorage;
@@ -35,7 +38,11 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     @Override
     public V get(K key) {
-        return cacheStorage.get(key);
+        V value = cacheStorage.get(key);
+        if(nonNull(value)) {
+            notifyListeners(key,value,CacheActionsEnum.GET.getValue());
+        }
+        return value;
     }
 
     @Override
@@ -49,6 +56,12 @@ public class MyCache<K, V> implements HwCache<K, V> {
     }
 
     private void notifyListeners(K key, V value, String action) {
-        listeners.forEach(it -> it.notify(key, value, action));
+        listeners.forEach(it -> {
+            try{
+                it.notify(key, value, action);
+            } catch (Exception e) {
+                logger.error("there is an exception in the listener {} and I don't know what to do", it.getClass().getSimpleName());
+            }
+        });
     }
 }

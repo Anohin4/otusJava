@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.cache.MyCache;
 import ru.otus.core.repository.executor.DbExecutorImpl;
 import ru.otus.core.sessionmanager.TransactionRunnerJdbc;
 import ru.otus.crm.datasource.DriverManagerDataSource;
@@ -36,7 +37,7 @@ public class HomeWork {
                 entityClassMetaDataClient); //реализация DataTemplate, универсальная
 
 // Код дальше должен остаться
-        var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
+        var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient, new MyCache<>());
         dbServiceClient.saveClient(new Client("dbServiceFirst"));
 
         var clientSecond = dbServiceClient.saveClient(new Client("dbServiceSecond"));
@@ -48,9 +49,9 @@ public class HomeWork {
 // Сделайте тоже самое с классом Manager (для него надо сделать свою таблицу)
 
         EntityClassMetaData<Manager> entityClassMetaDataManager = new EntityClassMetaDataImpl<>(Manager.class);
-        var dataTemplateManager = new DataTemplateJdbc<Manager>(dbExecutor, entityClassMetaDataManager);
+        var dataTemplateManager = new DataTemplateJdbc<>(dbExecutor, entityClassMetaDataManager);
 
-        var dbServiceManager = new DbServiceManagerImpl(transactionRunner, dataTemplateManager);
+        var dbServiceManager = new DbServiceManagerImpl(transactionRunner, dataTemplateManager, new MyCache<>());
         dbServiceManager.saveManager(new Manager("ManagerFirst"));
 
         var managerSecond = dbServiceManager.saveManager(new Manager("ManagerSecond"));

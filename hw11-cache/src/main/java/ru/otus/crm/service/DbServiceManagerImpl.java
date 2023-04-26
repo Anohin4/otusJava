@@ -5,22 +5,23 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.cache.HwCache;
-import ru.otus.cache.MyCache;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.sessionmanager.TransactionRunner;
 import ru.otus.crm.model.Manager;
 
 public class DbServiceManagerImpl implements DBServiceManager {
+
     private static final Logger log = LoggerFactory.getLogger(DbServiceManagerImpl.class);
 
     private final DataTemplate<Manager> managerDataTemplate;
     private final TransactionRunner transactionRunner;
     private final HwCache<Long, Manager> cache;
 
-    public DbServiceManagerImpl(TransactionRunner transactionRunner, DataTemplate<Manager> managerDataTemplate) {
+    public DbServiceManagerImpl(TransactionRunner transactionRunner, DataTemplate<Manager> managerDataTemplate,
+            HwCache<Long, Manager> cache) {
         this.transactionRunner = transactionRunner;
         this.managerDataTemplate = managerDataTemplate;
-        cache = new MyCache<>();
+        this.cache = cache;
     }
 
     @Override
@@ -35,6 +36,7 @@ public class DbServiceManagerImpl implements DBServiceManager {
                 return createdManager;
             }
             managerDataTemplate.update(connection, manager);
+            cache.put(manager.getNo(), manager);
             log.info("updated manager: {}", manager);
             return manager;
         });
@@ -48,8 +50,11 @@ public class DbServiceManagerImpl implements DBServiceManager {
         }
 
         return transactionRunner.doInTransaction(connection -> {
-
             var managerOptional = managerDataTemplate.findById(connection, no);
+            if (managerOptional.isPresent()) {
+                var result = managerOptional.get();
+                cache.put(result.getNo(), result);
+            }
             log.info("manager: {}", managerOptional);
             return managerOptional;
         });
@@ -61,6 +66,6 @@ public class DbServiceManagerImpl implements DBServiceManager {
             var managerList = managerDataTemplate.findAll(connection);
             log.info("managerList:{}", managerList);
             return managerList;
-       });
+        });
     }
 }

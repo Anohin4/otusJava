@@ -1,7 +1,7 @@
 package ru.otus.cache;
 
 public enum CacheActionsEnum {
-    PUT("put"),REMOVE("remove");
+    PUT("put"),REMOVE("remove"), GET("get");
     private final String value;
 
     CacheActionsEnum(String value) {

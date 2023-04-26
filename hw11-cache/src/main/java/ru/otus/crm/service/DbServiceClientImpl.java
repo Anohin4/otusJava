@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.cache.HwCache;
-import ru.otus.cache.MyCache;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.sessionmanager.TransactionRunner;
 import ru.otus.crm.model.Client;
@@ -17,10 +16,11 @@ public class DbServiceClientImpl implements DBServiceClient {
     private final TransactionRunner transactionRunner;
     private final HwCache<Long, Client> cache;
 
-    public DbServiceClientImpl(TransactionRunner transactionRunner, DataTemplate<Client> dataTemplate) {
+    public DbServiceClientImpl(TransactionRunner transactionRunner, DataTemplate<Client> dataTemplate,
+            HwCache<Long, Client> cache) {
         this.transactionRunner = transactionRunner;
         this.dataTemplate = dataTemplate;
-        this.cache = new MyCache<>();
+        this.cache = cache;
     }
 
     @Override
@@ -34,6 +34,7 @@ public class DbServiceClientImpl implements DBServiceClient {
                 return createdClient;
             }
             dataTemplate.update(connection, client);
+            cache.put(client.getId(), client);
             log.info("updated client: {}", client);
             return client;
         });
@@ -48,6 +49,10 @@ public class DbServiceClientImpl implements DBServiceClient {
 
         return transactionRunner.doInTransaction(connection -> {
             var clientOptional = dataTemplate.findById(connection, id);
+            if(clientOptional.isPresent()) {
+                Client result = clientOptional.get();
+                cache.put(result.getId(), result);
+            }
             log.info("client: {}", clientOptional);
             return clientOptional;
         });
