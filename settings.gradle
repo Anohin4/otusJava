@@ -8,3 +8,5 @@ include 'hw09-jdbc'
 include 'hw08-io'
 include 'hw07-struct-patterns'
 include 'hw-06_atm'
+
+include 'hw11-cache'
