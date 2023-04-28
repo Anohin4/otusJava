@@ -5,4 +5,11 @@ include 'hw05-proxy'
 include 'hw04-gc'
 include 'hw03-annotation'
 include 'hw10-jpql'
+
 include 'hw12-web-server'
+include 'hw09-jdbc'
+include 'hw08-io'
+include 'hw07-struct-patterns'
+include 'hw-06_atm'
+include 'hw11-cache'
+
